@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>污染場址模式選用參考手冊</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="/css/bulma.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89553979-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-89553979-3');
+    </script>
+
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <a href="..">
+                <p class="title is-2">污染場址模式選用參考手冊</p>
+            </a>
+            <hr>
+
+            <div class="buttons has-addons is-right">
+                <a href=".." class="button is-right">返回首頁</a>
+            </div>
+
+            <p class="subtitle is-3">污染調查與評估</p>
+            <p class="subtitle is-4">1. 請挑選「調查與評估目的」</p>
+
+        </div>
+    </section>
+    <div id="app">
+
+        <div v-cloak>
+            <!-- 選擇處 -->
+            <section class="section">
+                <div class="container">
+                    <a class="button" v-on:click="selectAll">全選</a>
+                    <a class="button" v-on:click="selectNone">全不選</a>
+                    <!-- <span>選取清單: {{ selectPurpose }}</span> -->
+                    <div class="field is-grouped is-grouped-multiline">
+                        <label class="checkbox" v-for="(item, index) in purpose">
+                            <input type="checkbox" :value="item" v-model="selectPurpose"> {{ item }}
+                        </label>
+                    </div>
+
+                    <br>
+
+                    <p class="subtitle is-4">已挑選「調查與評估目的」</p>
+
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control" v-for="(item, index) in selectPurpose">
+                            <div class="tags has-addons">
+                                <span class="tag is-info">{{item}}</span>
+                                <a class="tag is-delete" v-on:click="removeItem(item)"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 顯示處 -->
+            <section class="section">
+                <div class="container">
+
+                    <hr>
+                    <p class="subtitle is-4">2. 符合條件之模式清單</p>
+
+                    <!-- 手機板 -->
+                    <div class="card" v-show="scrollWidth < 767" v-for="item in selectModel" v-on:click="showMe(item.name)">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                {{ item.name }}
+                            </p>
+                        </header>
+                        <div class="card-content">
+
+                            <div class="field" v-show="item.family.length > 0">
+                                <label class="label">模式家族</label>
+                                <div class="control">
+                                    <ul>
+                                        <li v-for="(item2, index) in item.family">{{ item2 }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">調查與評估目的</label>
+                                <div class="control">
+                                    <ul>
+                                        <li v-bind:class="[selectPurpose.includes(item2) ? 'selectItem' : '']" v-for="(item2, index) in item.purpose">{{ item2 }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">具備功能</label>
+                                <div class="control">
+                                    <ul>
+                                        <li v-for="(item2, index) in item.function">{{ item2 }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- <div class="field">
+                            <label class="label">參考文獻</label>
+                            <div class="control">
+                                <ul>
+                                    <li v-for="(item2, index) in item.references">{{ item2 }}</li>
+                                </ul>
+                            </div>
+                        </div> -->
+
+
+                        </div>
+                    </div>
+
+                    <!-- 桌機板 -->
+                    <table class="table is-fullwidth" v-show="scrollWidth >= 767">
+                        <thead>
+                            <tr>
+                                <th>模式名稱</th>
+                                <th>模式家族</th>
+                                <th>調查與評估目的</th>
+                                <th>具備功能</th>
+                                <th>參考文獻</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in selectModel" v-on:click="showMe(item.name)">
+                                <th>{{ item.name }}</th>
+                                <td>
+                                    <ul>
+                                        <li v-for="(item2, index) in item.family">{{ item2 }}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li v-bind:class="[selectPurpose.includes(item2) ? 'selectItem' : '']" v-for="(item2, index) in item.purpose">{{ item2 }}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li v-for="(item2, index) in item.function">{{ item2 }}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li v-for="(item2, index) in item.references">{{ item2 }}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </section>
+
+            <div class="modal" v-bind:class="{ 'is-active' : showInformation.show }" v-on:keyup.esc="hideInfo">
+                <div class="modal-background" v-on:click="hideInfo"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">{{ showInformation.who.name }}</p>
+                        <button class="delete" aria-label="close" v-on:click="hideInfo"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <div class="content">
+                            <h2>分類</h2>
+                            <p v-for="(item2, index) in showInformation.who.type">{{ item2 }}</p>
+
+                            <h2>開發者</h2>
+                            <p>{{ showInformation.who.developer }}</p>
+
+                            <h2>狀態</h2>
+                            <p>{{ showInformation.who.status }}</p>
+
+                            <h2>功能</h2>
+                            <p v-for="(item2, index) in showInformation.who.Features">{{ item2 }}</p>
+
+                            <h2>限制</h2>
+                            <p>{{ showInformation.who.limit }}</p>
+
+                            <h2>程式供應</h2>
+                            <p>{{ showInformation.who.provider }}</p>
+                            <br>
+                        </div>
+
+                    </section>
+                    <footer class="modal-card-foot">
+
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="/js/vue.js"></script>
+    <script src="/js/investigation.js"></script>
+
+</body>
+
+</html>

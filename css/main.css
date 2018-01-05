@@ -1,0 +1,54 @@
+[v-cloak] {
+    display:none;
+}
+
+html,
+body {
+    font-family: Microsoft JhengHei;
+}
+
+section {
+    padding-bottom: 0 !important;
+    padding-top: 2em !important;
+}
+
+ul {
+    list-style-type: square;
+}
+
+tbody tr > td:not(:first-child) {
+    width: 20%;
+}
+
+tbody tr th, tbody tr > td:nth-child(2) {
+    width: 15%;
+}
+
+tbody > tr:hover {
+    background-color: #EEE;
+    cursor: pointer;
+}
+
+.selectItem {
+    color: red;
+    font-weight: bold;
+}
+
+.checkbox {
+    width: 350px;
+    padding: 10px;
+}
+
+.card {
+    margin-bottom: 1em;
+    box-shadow: 2px 2px 7px #999;
+}
+
+.card:hover {
+    margin-bottom: 1em;
+    box-shadow: 4px 3px 10px #555;
+}
+
+.card ul {
+    padding-left: 2em;
+}
